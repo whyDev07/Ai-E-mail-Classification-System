@@ -1,0 +1,56 @@
+
+server:
+  port: 8080
+  #Limits request size to prevent payload attacks (10MB max)
+  tomcat:
+    max-http-form-post-size: 10MB
+    max-swallow-size: 10MB
+
+spring:
+  application:
+    name: email-classifier
+
+  datasource:
+
+    url: ${DB_URL:}
+    username: ${DB_USERNAME:}
+    password: ${DB_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      # Prevents accidental schema changes
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+#AI API Configuration - OpenRouter(Free Tier)
+ai:
+  openrouter:
+    api-key: ${OPENROUTER_API_KEY:}
+    base-url: https://openrouter.ai/api/v1/chat/completions
+    #models keep getting updated so using what's free now
+    model: qwen/qwen3.6-plus:free
+    timeout-seconds: 30
+    max-retries: 3
+
+# JWT Config
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: 86400000  #24 hours
+
+logging:
+  level:
+    com.emailclassifier: DEBUG
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
