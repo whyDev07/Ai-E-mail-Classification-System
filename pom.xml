@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.emailclassifier</groupId>
-    <artifactId>Email_Classifier</artifactId>
+    <artifactId>Ai-Email_Classifier</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Email_Classifier</name>
     <description>Email_Classifier</description>
