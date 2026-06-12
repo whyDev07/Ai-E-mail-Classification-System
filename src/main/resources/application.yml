@@ -38,7 +38,7 @@ ai:
     api-key: ${OPENROUTER_API_KEY:}
     base-url: https://openrouter.ai/api/v1/chat/completions
     #models keep getting updated so using what's free now
-    model: qwen/qwen3.6-plus:free
+    model: openrouter/free
     timeout-seconds: 30
     max-retries: 3
 

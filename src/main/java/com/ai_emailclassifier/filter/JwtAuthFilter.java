@@ -2,6 +2,8 @@ package com.ai_emailclassifier.filter;
 
 import com.ai_emailclassifier.security.CustomUserDetailsService;
 import com.ai_emailclassifier.security.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,8 +49,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         try {
             username = jwtUtil.extractUsername(jwt);
-        } catch (Exception e) {
-            log.warn("Could not extract username from JWT: {}", e.getMessage());
+
+        } catch (ExpiredJwtException e) {
+            log.warn("Expired JWT while accessing {}", request.getRequestURI());
+
+        } catch (JwtException | IllegalArgumentException e) {
+            log.warn("Invalid JWT while accessing {}: {}",
+                    request.getRequestURI(),
+                    e.getMessage());
         }
 
         // Why check SecurityContext == null? to not re-authenticate if already done
