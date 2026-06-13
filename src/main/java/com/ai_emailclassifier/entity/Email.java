@@ -26,8 +26,9 @@ public class Email {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
-    @Column(nullable = false, length = 50)
-    private String classification;  //SPAM,IMPORTANT,PROMOTIONS,SOCIAL
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private EmailCategory classification;
 
     //WHY Double nullable - AI might not always return confidence score
     @Column(name = "confidence_score")

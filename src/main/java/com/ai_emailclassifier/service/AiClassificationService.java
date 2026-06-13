@@ -1,5 +1,6 @@
 package com.ai_emailclassifier.service;
 
+import com.ai_emailclassifier.entity.EmailCategory;
 import com.ai_emailclassifier.exception.AiServiceException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +47,10 @@ public class AiClassificationService {
     }
 
     //Result record — clean, immutable data carrier
-    public record ClassificationResult(String label, double confidenceScore) {}
+    public record ClassificationResult(
+            EmailCategory label,
+            double confidenceScore
+    ) {}
 
 
    // WHY retry logic? AI APIs can have transient failures.
@@ -210,17 +214,25 @@ public class AiClassificationService {
             content = content.substring(start, end + 1);
 
             JsonNode parsed = objectMapper.readTree(content);
-            String classification = parsed.path("classification").asText("IMPORTANT").toUpperCase();
+            String classification = parsed.path("classification")
+                    .asText("IMPORTANT")
+                    .trim()
+                    .toUpperCase();
             double confidence = parsed.path("confidence").asDouble(0.75);
 
             // validating label to guard against model returning unexpected values
-            if (!isValidClassification(classification)) {
-                log.warn("AI returned unknown classification '{}', defaulting to IMPORTANT", classification);
-                classification = "IMPORTANT";
+            EmailCategory category;
+            try {
+                category = EmailCategory.valueOf(classification);
+            } catch (IllegalArgumentException ex) {
+                log.warn(
+                        "AI returned unknown classification '{}', defaulting to IMPORTANT",
+                        classification
+                );
+                category = EmailCategory.IMPORTANT;
             }
-
-            log.info("AI classified email as: {} (confidence: {})", classification, confidence);
-            return new ClassificationResult(classification, confidence);
+            log.info("AI classified email as: {} (confidence: {})", category, confidence);
+            return new ClassificationResult(category, confidence);
 
         } catch (AiServiceException e) {
             throw e;
@@ -230,8 +242,4 @@ public class AiClassificationService {
         }
     }
 
-    private boolean isValidClassification(String label) {
-        return label.equals("SPAM") || label.equals("IMPORTANT")
-                || label.equals("PROMOTIONS") || label.equals("SOCIAL");
-    }
 }

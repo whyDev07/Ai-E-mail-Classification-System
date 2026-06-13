@@ -1,5 +1,6 @@
 package com.ai_emailclassifier.dto.response;
 
+import com.ai_emailclassifier.entity.EmailCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -30,7 +31,7 @@ public class EmailResponse {
             description = "AI classification result",
             example = "SPAM"
     )
-    private String classification;
+    private EmailCategory classification;
     private Double confidenceScore;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
