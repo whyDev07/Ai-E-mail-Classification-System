@@ -38,6 +38,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         //Only admins see all emails
                         .requestMatchers(HttpMethod.GET, "/api/emails").hasRole("ADMIN")
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         //All other endpoints require a valid token
                         .anyRequest().authenticated()
                 )
