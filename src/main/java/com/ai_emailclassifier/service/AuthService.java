@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,8 +54,10 @@ public class AuthService {
                         request.getUsername(), request.getPassword())
         );
 
-        UserDetails user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow();
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                "User not found: " + request.getUsername()));
 
         String token = jwtUtil.generateToken(user);
         log.info("User logged in: {}", request.getUsername());
