@@ -1,24 +1,32 @@
-
 # 📧 AI Email Classification System
 
-![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green)
+![Java](https://img.shields.io/badge/Java-17-orange) ![Spring
+Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue)
 ![JWT](https://img.shields.io/badge/Auth-JWT-yellow)
-![License: MIT](https://img.shields.io/badge/License-MIT-purple)
+![Swagger](https://img.shields.io/badge/API-Swagger-success)
+![JUnit](https://img.shields.io/badge/Tested-JUnit%20%2B%20Mockito-brightgreen)
 
-A production-style REST API that classifies emails using AI (OpenRouter free tier).
-Built with Java 17, Spring Boot 3.x, JWT authentication, and PostgreSQL.
+## 🚀 Overview
+
+AI Email Classification System is a production-style REST API built with
+Java 17 and Spring Boot 3 that classifies emails into **SPAM**,
+**IMPORTANT**, **PROMOTIONS**, and **SOCIAL** categories using an LLM
+through the OpenRouter API.
 
 ## Features
 - Classify emails into: SPAM | IMPORTANT | PROMOTIONS | SOCIAL
 - Confidence score returned with every classification
 - JWT-based authentication (USER and ADMIN roles)
 - BCrypt password hashing
+- Swagger/OpenAPI Documentation
 - Global exception handling with clean error responses
 - Retry mechanism for AI API failures
+-   JUnit 5 + Mockito Tests
 - SLF4J structured logging
-- PostgreSQL persistence
+- PostgreSQL + Spring Data JPA
+
+
 
 ## Tech Stack
 | Layer       | Technology              |
@@ -29,14 +37,19 @@ Built with Java 17, Spring Boot 3.x, JWT authentication, and PostgreSQL.
 | Security    | Spring Security + JWT   |
 | AI API      | OpenRouter API (Free-tier LLM models like Mistral / Qwen) |
 | Build       | Maven                   |
-## 🎯 Why This Project?
+| Testing       | Junit 5 + Mockito                   |
+| Documentation      | Swagger                   |
 
-This project demonstrates how modern backend systems integrate AI APIs into real-world workflows, including authentication, persistence, and fault tolerance.
-## Prerequisites
+
+## ⚙Prerequisites
 - Java 17+
 - Maven 3.8+
 - PostgreSQL 14+
-- OpenRouter API key (free at https://openrouter.ai)
+- OpenRouter API Key
+## 🎯 Why This Project?
+
+This project demonstrates how modern backend systems integrate AI APIs into real-world workflows, including authentication, persistence, and fault tolerance.
+
 
 ## 🏗️ Architecture
 
@@ -51,6 +64,13 @@ This project demonstrates how modern backend systems integrate AI APIs into real
 **Repository**<br/>
 ↓↓↓<br/>
 **Database** (PostgreSQL)<br/>
+
+Swagger:
+
+``` text
+http://localhost:8080/swagger-ui/index.html
+```
+
 
 ## Quick Start
 
@@ -136,6 +156,8 @@ src/main/java/com/emailclassifier/
 ├── repository/      # Spring Data JPA repositories
 ├── security/        # JWT utility + UserDetailsService
 └── service/         # Business logic + AI integration
+src/
+└── test/            # Services and Authentication tests
 ```
 
 ## Environment Variables
